@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Us Against The World</title>
+    <style>
+        body {
+            background-color: #000;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        #display-area {
+            z-index: 10;
+        }
+
+        .countdown-text {
+            font-size: 8rem;
+            font-weight: bold;
+            color: #ff2d55;
+            text-shadow: 0 0 20px #ff2d55;
+        }
+
+        .main-message {
+            display: none;
+            font-size: 2.5rem;
+            animation: fadeIn 2s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Floating Hearts */
+        .heart {
+            position: absolute;
+            color: #ff2d55;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            animation: float 4s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="display-area">
+        <div id="count" class="countdown-text">3</div>
+        <div id="message" class="main-message">
+            <h1>I love you, baby ❤️</h1>
+            <p>It's always gonna be <b>us against the world</b>,<br>even if everyone is against us.</p>
+        </div>
+    </div>
+
+    <script>
+        const countEl = document.getElementById('count');
+        const messageEl = document.getElementById('message');
+        let timeLeft = 3;
+
+        // Countdown Logic
+        const timer = setInterval(() => {
+            timeLeft--;
+            if (timeLeft > 0) {
+                countEl.innerText = timeLeft;
+            } else if (timeLeft === 0) {
+                countEl.innerText = "I LOVE YOU";
+            } else {
+                clearInterval(timer);
+                countEl.style.display = 'none';
+                messageEl.style.display = 'block';
+                startHearts();
+            }
+        }, 1000);
+
+        // Heart Generator
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.classList.add('heart');
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                document.body.appendChild(heart);
+                
+                setTimeout(() => { heart.remove(); }, 5000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
