@@ -3,102 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Us Against The World</title>
+    <title>For My Girl</title>
     <style>
         body {
             background-color: #000;
             color: white;
-            font-family: 'Arial', sans-serif;
+            margin: 0;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            text-align: center;
+            font-family: 'Arial', sans-serif;
         }
 
-        #display-area {
-            z-index: 10;
+        #heart-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
         }
 
-        .countdown-text {
-            font-size: 8rem;
-            font-weight: bold;
-            color: #ff2d55;
-            text-shadow: 0 0 20px #ff2d55;
-        }
-
-        .main-message {
-            display: none;
-            font-size: 2.5rem;
-            animation: fadeIn 2s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Floating Hearts */
-        .heart {
+        .photo {
             position: absolute;
-            color: #ff2d55;
-            font-size: 20px;
-            user-select: none;
-            pointer-events: none;
-            animation: float 4s linear infinite;
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            opacity: 0;
+            transition: all 1s ease-in-out;
+            border: 2px solid #fff;
         }
 
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        #message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            width: 150px;
+            color: #ff4d4d;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        #start-btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
 
-    <div id="display-area">
-        <div id="count" class="countdown-text">3</div>
-        <div id="message" class="main-message">
-            <h1>I love you, baby ❤️</h1>
-            <p>It's always gonna be <b>us against the world</b>,<br>even if everyone is against us.</p>
-        </div>
+    <button id="start-btn">Click for a surprise ❤️</button>
+    
+    <audio id="bg-music">
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="heart-container">
+        <div id="message">I will die for you</div>
+        
+        <img src="1.jpg" class="photo" id="p1">
+        <img src="2.jpg" class="photo" id="p2">
+        <img src="3.jpg" class="photo" id="p3">
+        <img src="4.jpg" class="photo" id="p4">
+        <img src="5.jpg" class="photo" id="p5">
+        <img src="6.jpg" class="photo" id="p6">
+        <img src="7.jpg" class="photo" id="p7">
+        <img src="8.jpg" class="photo" id="p8">
+        <img src="9.jpg" class="photo" id="p9">
+        <img src="10.jpg" class="photo" id="p10">
+        <img src="11.jpg" class="photo" id="p11">
+        <img src="12.jpg" class="photo" id="p12">
+        <img src="13.jpg" class="photo" id="p13">
+        <img src="14.jpg" class="photo" id="p14">
+        <img src="15.jpg" class="photo" id="p15">
+        <img src="16.jpg" class="photo" id="p16">
     </div>
 
     <script>
-        const countEl = document.getElementById('count');
-        const messageEl = document.getElementById('message');
-        let timeLeft = 3;
+        const btn = document.getElementById('start-btn');
+        const music = document.getElementById('bg-music');
+        const photos = document.querySelectorAll('.photo');
+        const message = document.getElementById('message');
 
-        // Countdown Logic
-        const timer = setInterval(() => {
-            timeLeft--;
-            if (timeLeft > 0) {
-                countEl.innerText = timeLeft;
-            } else if (timeLeft === 0) {
-                countEl.innerText = "I LOVE YOU";
-            } else {
-                clearInterval(timer);
-                countEl.style.display = 'none';
-                messageEl.style.display = 'block';
-                startHearts();
-            }
-        }, 1000);
+        // Heart Shape Coordinates
+        const coords = [
+            {t: 0, l: 120}, {t: 0, l: 180}, {t: 30, l: 240}, {t: 90, l: 270},
+            {t: 150, l: 240}, {t: 210, l: 180}, {t: 270, l: 120}, {t: 210, l: 60},
+            {t: 150, l: 0}, {t: 90, l: -30}, {t: 30, l: 0}, {t: 0, l: 60},
+            {t: 60, l: 60}, {t: 60, l: 180}, {t: 120, l: 60}, {t: 120, l: 180}
+        ];
 
-        // Heart Generator
-        function startHearts() {
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.innerHTML = '❤️';
-                heart.classList.add('heart');
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-                document.body.appendChild(heart);
-                
-                setTimeout(() => { heart.remove(); }, 5000);
-            }, 300);
-        }
+        btn.addEventListener('click', () => {
+            btn.style.display = 'none';
+            music.play();
+
+            // Display images one by one with a delay
+            photos.forEach((photo, index) => {
+                setTimeout(() => {
+                    // Random position initially
+                    photo.style.top = Math.random() * 80 + 'vh';
+                    photo.style.left = Math.random() * 80 + 'vw';
+                    photo.style.opacity = '1';
+
+                    // After the song builds up, form the heart
+                    setTimeout(() => {
+                        photo.style.top = coords[index].t + 'px';
+                        photo.style.left = coords[index].l + 'px';
+                    }, 5000); 
+
+                }, index * 1000); // New photo every second
+            });
+
+            // Show final message
+            setTimeout(() => {
+                message.style.opacity = '1';
+            }, 18000);
+        });
     </script>
 </body>
 </html>
+
+                
