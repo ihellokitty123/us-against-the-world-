@@ -3,135 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Girl</title>
+    <title>For My Baby</title>
     <style>
+        :root {
+            --pink-main: #ffb7c5;
+            --pink-dark: #ff8fa3;
+        }
+
         body {
-            background-color: #000;
-            color: white;
             margin: 0;
-            overflow: hidden;
+            padding: 0;
+            background-color: #fff0f3;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Floating Lilies */
+        .lily {
+            position: absolute;
+            font-size: 25px;
+            z-index: 1;
+            animation: float 10s infinite linear;
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Countdown Overlay */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--pink-main);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            font-family: 'Arial', sans-serif;
+            z-index: 100;
+            cursor: pointer;
         }
 
-        #heart-container {
+        #countdown-text {
+            font-size: 80px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Main Content */
+        #content {
+            display: none;
+            text-align: center;
+            width: 100%;
+            padding-bottom: 100px;
+        }
+
+        #love-message {
+            font-size: 30px;
+            color: var(--pink-dark);
+            margin: 20px;
+            font-weight: bold;
+        }
+
+        /* Photo Heart Container */
+        .heart-container {
             position: relative;
-            width: 300px;
-            height: 300px;
+            width: 350px;
+            height: 350px;
+            margin: 50px auto;
         }
 
         .photo {
             position: absolute;
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
+            border: 4px solid white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             object-fit: cover;
-            border-radius: 5px;
             opacity: 0;
-            transition: all 1s ease-in-out;
-            border: 2px solid #fff;
+            transition: all 0.8s ease;
         }
 
-        #message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 2s ease-in-out;
-            width: 150px;
-            color: #ff4d4d;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        /* Lyrics Styling */
+        #lyrics {
+            margin-top: 20px;
+            font-style: italic;
+            color: #d63384;
+            min-height: 24px;
         }
 
-        #start-btn {
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            background: #ff4d4d;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
+        /* Running Kitten */
+        .kitten-track {
+            position: fixed;
+            bottom: 0;
+            left: -100px;
+            font-size: 40px;
+            animation: run 15s infinite linear;
             z-index: 10;
+        }
+
+        @keyframes run {
+            0% { left: -100px; }
+            100% { left: 110vw; }
+        }
+
+        #final-message {
+            display: none;
+            font-size: 40px;
+            color: #ff0055;
+            font-weight: bold;
+            margin-top: 20px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
         }
     </style>
 </head>
 <body>
 
-    <button id="start-btn">Click for a surprise ❤️</button>
-    
-    <audio id="bg-music">
-        <source src="song.mp3" type="audio/mpeg">
-    </audio>
-
-    <div id="heart-container">
-        <div id="message">I will die for you</div>
-        
-        <img src="1.jpg" class="photo" id="p1">
-        <img src="2.jpg" class="photo" id="p2">
-        <img src="3.jpg" class="photo" id="p3">
-        <img src="4.jpg" class="photo" id="p4">
-        <img src="5.jpg" class="photo" id="p5">
-        <img src="6.jpg" class="photo" id="p6">
-        <img src="7.jpg" class="photo" id="p7">
-        <img src="8.jpg" class="photo" id="p8">
-        <img src="9.jpg" class="photo" id="p9">
-        <img src="10.jpg" class="photo" id="p10">
-        <img src="11.jpg" class="photo" id="p11">
-        <img src="12.jpg" class="photo" id="p12">
-        <img src="13.jpg" class="photo" id="p13">
-        <img src="14.jpg" class="photo" id="p14">
-        <img src="15.jpg" class="photo" id="p15">
-        <img src="16.jpg" class="photo" id="p16">
+    <div id="overlay" onclick="startSurprise()">
+        <div id="countdown-text">Tap to Start</div>
     </div>
 
-    <script>
-        const btn = document.getElementById('start-btn');
-        const music = document.getElementById('bg-music');
-        const photos = document.querySelectorAll('.photo');
-        const message = document.getElementById('message');
+    <audio id="bgMusic" src="music.mp3"></audio>
 
-        // Heart Shape Coordinates
-        const coords = [
-            {t: 0, l: 120}, {t: 0, l: 180}, {t: 30, l: 240}, {t: 90, l: 270},
-            {t: 150, l: 240}, {t: 210, l: 180}, {t: 270, l: 120}, {t: 210, l: 60},
-            {t: 150, l: 0}, {t: 90, l: -30}, {t: 30, l: 0}, {t: 0, l: 60},
-            {t: 60, l: 60}, {t: 60, l: 180}, {t: 120, l: 60}, {t: 120, l: 180}
+    <div id="content">
+        <div id="love-message"></div>
+        
+        <div class="heart-container" id="heart">
+            </div>
+
+        <div id="lyrics"></div>
+        <div id="final-message">I WOULD DIE FOR YOU ❤️</div>
+    </div>
+
+    <div class="kitten-track">🐈</div>
+
+    <script>
+        function createLily() {
+            const lily = document.createElement('div');
+            lily.className = 'lily';
+            lily.innerHTML = '🪷';
+            lily.style.left = Math.random() * 100 + 'vw';
+            lily.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            document.body.appendChild(lily);
+            setTimeout(() => lily.remove(), 10000);
+        }
+        setInterval(createLily, 800);
+
+        const heartPoints = [
+            {x: 175, y: 100}, {x: 125, y: 60}, {x: 75, y: 70}, {x: 40, y: 115},
+            {x: 40, y: 175}, {x: 75, y: 235}, {x: 125, y: 285}, {x: 175, y: 330},
+            {x: 225, y: 285}, {x: 275, y: 235}, {x: 310, y: 175}, {x: 310, y: 115},
+            {x: 275, y: 70}, {x: 225, y: 60}, {x: 175, y: 175}, {x: 175, y: 240}
         ];
 
-        btn.addEventListener('click', () => {
-            btn.style.display = 'none';
-            music.play();
+        const audio = document.getElementById('bgMusic');
+        const overlay = document.getElementById('overlay');
+        const countText = document.getElementById('countdown-text');
 
-            // Display images one by one with a delay
-            photos.forEach((photo, index) => {
+        function startSurprise() {
+            let count = 3;
+            countText.innerText = count;
+            
+            const timer = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countText.innerText = count;
+                } else if (count === 0) {
+                    countText.innerText = "GO!";
+                } else {
+                    clearInterval(timer);
+                    overlay.style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                    audio.play();
+                    runSequence();
+                }
+            }, 1000);
+        }
+
+        async function runSequence() {
+            const msg = document.getElementById('love-message');
+            const words = ["I", "Love", "You", "So", "Much", "Baby"];
+            
+            for(let word of words) {
+                msg.innerText += word + " ";
+                await new Promise(r => setTimeout(r, 600));
+            }
+
+            // Wait for lyrics part (adjust delay based on your song)
+            document.getElementById('lyrics').innerText = "Even though we're going through it...";
+            
+            const container = document.getElementById('heart');
+            for(let i = 1; i <= 16; i++) {
+                const img = document.createElement('img');
+                img.src = `Photo${i}.jpg`; // Fixed naming
+                img.className = 'photo';
+                // Start scattered
+                img.style.left = Math.random() * 200 + 'px';
+                img.style.top = Math.random() * 200 + 'px';
+                container.appendChild(img);
+                
+                // Show with "beat" (every 500ms)
                 setTimeout(() => {
-                    // Random position initially
-                    photo.style.top = Math.random() * 80 + 'vh';
-                    photo.style.left = Math.random() * 80 + 'vw';
-                    photo.style.opacity = '1';
-
-                    // After the song builds up, form the heart
-                    setTimeout(() => {
-                        photo.style.top = coords[index].t + 'px';
-                        photo.style.left = coords[index].l + 'px';
-                    }, 5000); 
-
-                }, index * 1000); // New photo every second
-            });
-
-            // Show final message
-            setTimeout(() => {
-                message.style.opacity = '1';
-            }, 18000);
-        });
+                    img.style.opacity = '1';
+                    img.style.left = (heartPoints[i-1].x - 40) + 'px';
+                    img.style.top = (heartPoints[i-1].y - 40) + 'px';
+                    
+                    if(i === 16) {
+                        setTimeout(() => {
+                            document.getElementById('final-message').style.display = 'block';
+                        }, 1000);
+                    }
+                }, i * 500);
+            }
+        }
     </script>
 </body>
 </html>
-
-                
