@@ -3,43 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Forever</title>
+    <title>For My Baby</title>
     <style>
         :root {
-            --pink-bg: #ffe5ec;
+            --pink-bg: #fff0f3;
             --pink-accent: #ff85a1;
-            --text-color: #ff4d6d;
+            --deep-pink: #ff4d6d;
         }
 
         body, html {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
             background-color: var(--pink-bg);
-            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            font-family: 'Georgia', serif;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Floating Lilies - Lots of them! */
-        .lily {
+        /* Realistic Flower Animation */
+        .flower {
             position: absolute;
-            font-size: 30px;
+            width: 40px; height: 40px;
+            background: url('https://img.icons8.com/emoji/96/cherry-blossom.png') no-repeat center/contain;
             z-index: 1;
-            animation: floatUp 8s infinite linear;
-            opacity: 0.8;
+            animation: fall 10s infinite linear;
             pointer-events: none;
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
             10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
         }
 
-        /* Countdown & Big Text */
+        /* Start Button Overlay */
         #overlay {
             position: fixed;
             inset: 0;
@@ -49,11 +48,13 @@
             align-items: center;
             z-index: 2000;
             cursor: pointer;
-            color: var(--pink-accent);
-            font-size: 5rem;
-            font-weight: bold;
+            color: var(--deep-pink);
+            font-size: 3rem;
+            text-align: center;
+            padding: 20px;
         }
 
+        /* Big Word Intro */
         #big-word-display {
             display: none;
             position: fixed;
@@ -63,102 +64,112 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 8rem;
-            color: var(--text-color);
-            text-transform: uppercase;
+            font-size: 7rem;
+            color: var(--deep-pink);
             font-weight: 900;
-            text-shadow: 4px 4px 0px white;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.1);
         }
 
         /* Main Stage */
         #stage {
             display: none;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 10;
         }
 
-        /* Photo Slider and Heart Container */
         .photo-container {
             position: relative;
-            width: 400px;
-            height: 400px;
-            margin-bottom: 20px;
+            width: 600px;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .photo {
             position: absolute;
-            width: 120px;
-            height: 120px;
-            border: 6px solid white;
-            outline: 3px solid var(--pink-accent); /* Floral-like border effect */
-            border-radius: 15px;
+            width: 100px;
+            height: 100px;
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(255, 133, 161, 0.5);
+            border-radius: 10px;
             object-fit: cover;
-            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 1.2s ease-in-out;
             opacity: 0;
-            transform: scale(0);
+            z-index: 5;
+        }
+
+        /* The Heart Message - Stacked */
+        #final-message {
+            position: absolute;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--deep-pink);
+            font-weight: bold;
+            font-size: 2.2rem;
+            text-align: center;
+            z-index: 20;
+            line-height: 1.2;
         }
 
         /* Lyrics */
         #lyrics {
-            font-size: 1.5rem;
-            color: var(--text-color);
+            position: fixed;
+            bottom: 120px;
+            font-size: 1.8rem;
+            color: var(--deep-pink);
             text-align: center;
-            max-width: 80%;
-            height: 50px;
-            margin-top: 20px;
+            width: 100%;
+            height: 60px;
             text-shadow: 1px 1px 2px white;
         }
 
-        /* Running Fluffy Cats */
-        .cat-parade {
+        /* Large Pink Fluffy Cat */
+        .cat-container {
             position: fixed;
-            bottom: 10px;
-            font-size: 50px;
-            white-space: nowrap;
-            animation: runAcross 12s infinite linear;
+            bottom: -20px;
+            left: -200px;
             z-index: 100;
+            animation: walkAcross 15s infinite linear;
         }
 
-        @keyframes runAcross {
-            from { left: -500px; }
+        .cat-img {
+            width: 150px;
+            filter: drop-shadow(0 0 10px pink);
+        }
+
+        @keyframes walkAcross {
+            from { left: -200px; }
             to { left: 100vw; }
-        }
-
-        #final-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 100;
-            color: white;
-            font-size: 2rem;
-            background: rgba(255, 77, 109, 0.8);
-            padding: 10px 20px;
-            border-radius: 50px;
-            display: none;
-            text-align: center;
-            white-space: nowrap;
         }
     </style>
 </head>
 <body>
 
-    <div id="overlay" onclick="startEngine()">Tap to Start ❤️</div>
+    <div id="overlay" onclick="startSurprise()">Tap to see how much I love you... 🌸</div>
 
     <div id="big-word-display"></div>
 
     <div id="stage">
         <div class="photo-container" id="photo-box">
-            <div id="final-message">I WOULD DIE FOR YOU ❤️</div>
+            <div id="final-message">
+                <span>I</span>
+                <span>WOULD</span>
+                <span>DIE</span>
+                <span>FOR YOU</span>
+            </div>
         </div>
         <div id="lyrics"></div>
     </div>
 
-    <div class="cat-parade">🐈🌸🐈‍⬛🌷🐈🌸🐈‍⬛🌷</div>
+    <div class="cat-container">
+        <img src="https://img.icons8.com/plasticine/200/cat--v1.png" class="cat-img" alt="Pink Cat">
+    </div>
 
     <audio id="song" src="song.mp3"></audio>
 
@@ -170,91 +181,79 @@
         const lyricsBox = document.getElementById('lyrics');
         const photoBox = document.getElementById('photo-box');
 
-        // Create 40 Lilies
-        for(let i=0; i<40; i++) {
-            const lily = document.createElement('div');
-            lily.className = 'lily';
-            lily.innerHTML = '🪷';
-            lily.style.left = Math.random() * 100 + 'vw';
-            lily.style.animationDelay = Math.random() * 8 + 's';
-            document.body.appendChild(lily);
+        // Create 50 realistic Flowers
+        for(let i=0; i<50; i++) {
+            const f = document.createElement('div');
+            f.className = 'flower';
+            f.style.left = Math.random() * 100 + 'vw';
+            f.style.animationDelay = Math.random() * 10 + 's';
+            f.style.transform = `scale(${0.5 + Math.random()})`;
+            document.body.appendChild(f);
         }
 
-        function startEngine() {
-            let count = 3;
-            overlay.innerText = count;
-            const timer = setInterval(() => {
-                count--;
-                if(count > 0) overlay.innerText = count;
-                else if(count === 0) overlay.innerText = "GO!";
-                else {
-                    clearInterval(timer);
-                    overlay.style.display = 'none';
-                    song.play();
-                    showLoveWords();
-                }
-            }, 1000);
+        function startSurprise() {
+            overlay.style.display = 'none';
+            song.play();
+            showSequence();
         }
 
-        async function showLoveWords() {
+        async function showSequence() {
             wordDisplay.style.display = 'flex';
-            const words = ["I", "LOVE", "YOU", "SO", "MUCH", "BABY"];
+            const words = ["I", "LOVE", "YOU", "BABY"];
             for(let w of words) {
                 wordDisplay.innerText = w;
-                await new Promise(r => setTimeout(r, 800));
+                await new Promise(r => setTimeout(r, 1200)); // Longer pause as requested
             }
             wordDisplay.style.display = 'none';
-            startMainSequence();
+            runMainShow();
         }
 
-        function startMainSequence() {
+        function runMainShow() {
             stage.style.display = 'flex';
             
-            // Lyrics timing (adjust these numbers to match your song beats)
+            // Sync lyrics with the specific start you mentioned
             const lines = [
-                {t: 0, text: "Even though we're going through it..."},
-                {t: 3000, text: "And you feel alone..."},
-                {t: 6000, text: "Just know that I will love you."}
+                {t: 0, text: "I'm finding ways to say..."},
+                {t: 4000, text: "I'm finding ways to say "},
+                {t: 8000, text: "I love you..."},
+                {t: 12000, text: "I hate it when you cry..."}
             ];
 
             lines.forEach(line => {
                 setTimeout(() => { lyricsBox.innerText = line.text; }, line.t);
             });
 
-            // Create 16 Photos
+            // Heart Coordinates (Spaced out perfectly for 16 photos)
             const heartCoords = [
-                {x: 200, y: 100}, {x: 140, y: 60}, {x: 70, y: 80}, {x: 50, y: 150},
-                {x: 80, y: 240}, {x: 140, y: 300}, {x: 200, y: 360}, {x: 260, y: 300},
-                {x: 320, y: 240}, {x: 350, y: 150}, {x: 330, y: 80}, {x: 260, y: 60},
-                {x: 200, y: 180}, {x: 160, y: 180}, {x: 240, y: 180}, {x: 200, y: 260}
+                {x: 300, y: 150}, {x: 220, y: 100}, {x: 120, y: 130}, {x: 80, y: 230},
+                {x: 110, y: 350}, {x: 200, y: 450}, {x: 300, y: 530}, {x: 400, y: 450},
+                {x: 490, y: 350}, {x: 520, y: 230}, {x: 480, y: 130}, {x: 380, y: 100},
+                {x: 300, y: 250}, {x: 240, y: 200}, {x: 360, y: 200}, {x: 300, y: 380}
             ];
 
             for(let i=1; i<=16; i++) {
                 const img = document.createElement('img');
                 img.src = `Photo${i}.jpg`;
                 img.className = 'photo';
-                // Start them off-screen for the "swipe" effect
-                img.style.left = "-200px";
-                img.style.top = "150px";
+                // Swipe in from different sides
+                img.style.left = i % 2 === 0 ? "-300px" : "900px";
+                img.style.top = Math.random() * 500 + "px";
                 photoBox.appendChild(img);
 
-                // Slide them in one by one to the beat
+                // Swipe-in timing
                 setTimeout(() => {
                     img.style.opacity = '1';
-                    img.style.transform = 'scale(1)';
-                    // Move to heart position
-                    img.style.left = (heartCoords[i-1].x - 60) + "px";
-                    img.style.top = (heartCoords[i-1].y - 60) + "px";
+                    img.style.left = (heartCoords[i-1].x - 50) + "px";
+                    img.style.top = (heartCoords[i-1].y - 50) + "px";
                     
                     if(i === 16) {
                         setTimeout(() => {
-                            document.getElementById('final-message').style.display = 'block';
-                        }, 1000);
+                            document.getElementById('final-message').style.display = 'flex';
+                        }, 1500);
                     }
-                }, 8000 + (i * 600)); // Starts after words, slides every 0.6s
+                }, 1000 + (i * 800)); // Swiping sequence
             }
         }
     </script>
 </body>
 </html>
-    
